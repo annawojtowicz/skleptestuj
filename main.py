@@ -1,16 +1,23 @@
-# This is a sample Python script.
+import time
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
 
+driver = webdriver.Chrome(ChromeDriverManager().install())
+driver.get("https://www.onet.pl")
+assert "Onet" in driver.title
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+counter = 0
+while counter < 30:
+    try:
+        button = driver.find_element_by_xpath("//button[contains(@class, 'cmp-intro_acceptAll')]")
+        button.click()
+        break
+    except:
+        time.sleep(1)
+        counter += 1
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+header = driver.find_element_by_xpath("(//div[contains(@class, 'popupCloseIcon')])[2]")
+header.click()
+driver.close()
